@@ -33,13 +33,19 @@ class ONNXModel():
 
         self.input_name = self.get_input_name(self.onnx_session)
         self.output_name = self.get_output_name(self.onnx_session)
+        self.print_model_size(onnx_file)
         self.print_IO()
+
+    def print_model_size(self, onnx_file):
+        size = os.path.getsize(onnx_file)
+        print(f"Model file size: {size / (1024 * 1024):.2f} MB")
 
     def get_input_size(self):
         return self.onnx_session.get_inputs()[0].shape[1:]
 
     def print_IO(self,):
         # 查看模型的输入信息
+
         print("Model Inputs:")
         for input in self.onnx_session.get_inputs():
             print(f"Name: {input.name}")
