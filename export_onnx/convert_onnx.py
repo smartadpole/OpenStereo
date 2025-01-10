@@ -50,9 +50,9 @@ def GetArgs():
 
 
 class WarpModel(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, config):
         super(WarpModel, self).__init__()
-        self.model = LightStereo(EasyDict(cfgs_s))
+        self.model = LightStereo(config)
 
     def load(self, model_path, device):
         checkpoint = torch.load(model_path)
@@ -87,7 +87,10 @@ if __name__ == "__main__":
     MkdirSimple(output)
     output_names = 'output'
 
-    model = WarpModel()
+    if '-S-' in args.model:
+        model = WarpModel(EasyDict(cfgs_s))
+    else:
+        model = WarpModel(EasyDict(cfgs_lx))
     model.load(args.model, device)
 
     # Create dummy input for the model

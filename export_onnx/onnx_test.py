@@ -69,6 +69,17 @@ def inverse_resize_padding_right_top(img, origin_size):
     img = cv2.resize(img, (w, h))
     return img
 
+def resize(img, size):
+    target_h, target_w = size
+    img = cv2.resize(img, (target_w, target_h))
+
+    return img
+
+def inverse_resize(img, origin_size):
+    origin_h, origin_w = origin_size
+    img = cv2.resize(img, (origin_w, origin_h))
+    return img
+
 def transpose_image(img):
     return np.transpose(img, (2, 0, 1))
 
@@ -92,7 +103,7 @@ def inference(imgs, model):
         else:
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-        img = resize_padding_right_top(img, [h, w])
+        img = resize(img, [h, w])
         img = transpose_image(img)
         img = to_tensor(img)
         img = normalize_image(img, mean, std)
@@ -136,7 +147,7 @@ def test_image(image_files: list, model):
 
     img_org = imgs[0]
     depth = inference(imgs, model)
-    depth = inverse_resize_padding_right_top(depth, img_org.shape[:2])
+    depth = inverse_resize(depth, img_org.shape[:2])
     combined_img = visual_image(img_org, depth)
 
     return combined_img, depth
