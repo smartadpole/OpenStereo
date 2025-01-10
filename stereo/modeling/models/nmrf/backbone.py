@@ -6,7 +6,10 @@ import logging
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from timm.layers import trunc_normal_
+try:
+    from timm.models.layers import trunc_normal_
+except ImportError:
+    from timm.layers import trunc_normal_
 
 from .ops.modules import MSDeformAttn
 from .adaptor_modules import DeformNeck
